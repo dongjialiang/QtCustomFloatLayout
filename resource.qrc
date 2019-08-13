@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>style/customDevice.qss</file>
+        <file>images/icon.jpg</file>
+    </qresource>
+</RCC>
