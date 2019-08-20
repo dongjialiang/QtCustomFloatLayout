@@ -4,12 +4,10 @@ FloatLayout::FloatLayout(QList<CustomDevice *> customDeviceList,
                          QWidget * parent) :
     QGraphicsView (parent) {
     graphicsScene = new QGraphicsScene(this);
-    setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff); // 去掉垂直滚动条能防止下方图像残留
-    setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff); // 去掉垂直滚动条能防止右侧图像残留
 
-    total = customDeviceList.size(); // 子控件的总数
+    total = customDeviceList.size(); // 子部件的总数
 
-    if (total > 0) { // 如果存在子控件
+    if (total > 0) { // 如果存在子部件
         graphicsRectItem = graphicsScene->addRect(0, 0, width(), height());
         graphicsRectItem->setFlags(QGraphicsItem::ItemIsMovable); // 让矩形图元可以被拖动
         graphicsWidgetList = customDeviceList;
@@ -18,6 +16,8 @@ FloatLayout::FloatLayout(QList<CustomDevice *> customDeviceList,
         }
 
         setAlignment(Qt::AlignTop | Qt::AlignLeft); // 设置图形视图的左上角为开始位置
+        verticalScrollBar()->setStyleSheet("width: 1; height: 1;");   // 设置垂直滚动条宽高为1防止下方图像残留
+        horizontalScrollBar()->setStyleSheet("width: 1; height: 1;"); // 设置水平滚动条宽高为1防止右侧图像残留
         setSceneRect(0, 0, width(), height());
         graphicsScene->setSceneRect(0, 0, width(), height());
 
@@ -29,7 +29,7 @@ FloatLayout::FloatLayout(QList<CustomDevice *> customDeviceList,
     }
 }
 FloatLayout::~FloatLayout() {}
-/* 控件的大小变化事件 */
+/* 部件的大小变化事件 */
 void FloatLayout::resizeEvent(QResizeEvent * size) {
     QWidget::resizeEvent(size);
     if (total > 0) {
@@ -52,31 +52,31 @@ bool FloatLayout::eventFilter(QObject *widget, QEvent *event) {
     }
     return true;
 }
-/* 计算控件宽高行列以及设备控件x轴的外边距 */
+/* 计算部件宽高行列以及设备部件x轴的外边距 */
 void FloatLayout::widgetCalculate() {
     qreal width = this->width();  // 滚动区域的宽度
     count = 0;
-    customDeviceWidth = graphicsWidgetList[count]->geometry().width() * scaleValue; // 子控件的宽度
-    customDeviceHeight = graphicsWidgetList[count]->geometry().height() * scaleValue; // 子控件的高度
+    customDeviceWidth = graphicsWidgetList[count]->geometry().width() * scaleValue;   // 子部件的宽度
+    customDeviceHeight = graphicsWidgetList[count]->geometry().height() * scaleValue; // 子部件的高度
 
     column = (int(width) % int(customDeviceWidth)) > 0
             ? (int(width / customDeviceWidth) - 1) > 0
               ? int(width / customDeviceWidth) - 1
               : 1
-              : int(width / customDeviceWidth); // 通过滚动区域的宽度除于(自定义设备控件的宽度和水平外边距相加的和)得到每行的列数
+              : int(width / customDeviceWidth); // 通过滚动区域的宽度除于(自定义设备部件的宽度和水平外边距相加的和)得到每行的列数
     row = total % column > 0
             ? (total / column) + 1
-            : (total / column); // 通过子控件总数和列数取模,有剩余时行数增1,否则为实际行数
+            : (total / column); // 通过子部件总数和列数取模,有剩余时行数增1,否则为实际行数
     marginX = (width - (column * customDeviceWidth)) / (column + 1);
 }
-/* 宽度变化时调整控件位置 */
+/* 宽度变化时调整部件位置 */
 void FloatLayout::widthChanged() {
     qreal width = this->width();  // 滚动区域的宽度
     qreal height = this->height();
     widgetCalculate();
     for (int rowSequence = 0; rowSequence < row; rowSequence++) {
         for (int columnSequence = 0; columnSequence < column; columnSequence++, count++) {
-            if (count >= total) { // 如控件计数值超过控件总数表示子控件已全部设置好位置区域
+            if (count >= total) { // 如部件计数值超过部件总数表示子部件已全部设置好位置区域
                 break;
             } else {
                 graphicsWidgetList[count]
@@ -91,13 +91,13 @@ void FloatLayout::widthChanged() {
                                              (marginY * ((rowSequence + 1) == column
                                                          ? rowSequence + 2
                                                          : rowSequence + 1))
-                                             + customDeviceHeight * (rowSequence + 1))); // 为子控件设置位置区域
+                                             + customDeviceHeight * (rowSequence + 1))); // 为子部件设置位置区域
             }
         }
     }
     graphicsRectItem->setRect(0, 0, width, height);
 }
-/* 缩小设备控件以展示全部的设备控件 */
+/* 缩小设备部件以展示全部的设备部件 */
 void FloatLayout::allShow() {
     qreal height = this->height();
     while ((row * customDeviceHeight) + marginY * (row + 1) > height) {
@@ -110,7 +110,7 @@ void FloatLayout::allShow() {
     }
     widthChanged();
 }
-/* 检查控件空余的空间来放大设备控件 */
+/* 检查部件空余的空间来放大设备部件 */
 void FloatLayout::checkFreeSpace() {
     qreal height = this->height();
     while ((height - (row * customDeviceHeight + marginY * (row + 1)))
@@ -131,5 +131,4 @@ void FloatLayout::setTotalValue(int total) {
         graphicsWidgetList.removeAt(count);
     }
     this->total = count + 1;
-    widthChanged();
 }

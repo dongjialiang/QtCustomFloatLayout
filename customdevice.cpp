@@ -4,10 +4,7 @@ CustomDevice::CustomDevice(QGraphicsItem * parent) :
     QGraphicsProxyWidget (parent) {
     initCustomDevice();
 }
-CustomDevice::~CustomDevice() {
-    customDeviceButton->deleteLater();
-    customDeviceButton = nullptr;
-};
+CustomDevice::~CustomDevice() {};
 CustomDevice::CustomDevice(QString name, QString iconPath, QString status,
                            QGraphicsItem * parent) :
     QGraphicsProxyWidget (parent) {
@@ -31,16 +28,15 @@ void CustomDevice::initCustomDevice() {
     vBoxLayout->setSpacing(0);
     vBoxLayout->setMargin(0);
     customDeviceButton->setLayout(vBoxLayout);
-
-    /* 设备名字控件 */
+    /* 设备名字部件 */
     titleName = new QLabel(customDeviceButton);
     titleName->setObjectName("titleName");
     titleName->setAlignment(Qt::AlignCenter);
     titleName->setFixedHeight(35);
-    /* 图标控件 */
+    /* 图标部件 */
     iconControl = new QLabel(customDeviceButton);
     iconControl->setObjectName("iconControl");
-    /* 状态控件 */
+    /* 状态部件 */
     statusPrompt = new QLabel(customDeviceButton);
     statusPrompt->setObjectName("statusPrompt");
     statusPrompt->setAlignment(Qt::AlignCenter);
@@ -49,7 +45,7 @@ void CustomDevice::initCustomDevice() {
     vBoxLayout->addWidget(titleName);
     vBoxLayout->addWidget(iconControl);
     vBoxLayout->addWidget(statusPrompt);
-    /* 自定义样式 */
+    /* 初始化自定义样式和内容 */
     initCustomStyle();
     setCustomDeviceContent(name, iconPath, status);
 

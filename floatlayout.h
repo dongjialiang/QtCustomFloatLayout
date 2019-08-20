@@ -29,13 +29,13 @@ private:
     qreal scaleStep;                                    // 缩放步进值
     QGraphicsScene * graphicsScene;                     // 图形场景
     QGraphicsRectItem * graphicsRectItem;               // 矩形图元(用于拖动)
-    QList<CustomDevice *> graphicsWidgetList;           // 图形代理控件的列表
+    QList<CustomDevice *> graphicsWidgetList;           // 图形代理部件的列表
     void resizeEvent(QResizeEvent * size);              // 大小变化事件
     bool eventFilter(QObject * widget, QEvent * event); // 鼠标滚动过滤事件
-    void widthChanged();                                // 宽度改变时调整控件位置的函数
-    void widgetCalculate();                             // 计算控件宽、高、行、列和设备控件x轴的外边距的函数
-    void allShow();                                     // 缩小设备控件以显示全部设备控件的函数
-    void checkFreeSpace();                              // 检查控件是否有空余位置以放大设备控件
+    void widthChanged();                                // 宽度改变时调整部件位置的函数
+    void widgetCalculate();                             // 计算部件宽、高、行、列和设备部件x轴的外边距的函数
+    void allShow();                                     // 缩小设备部件以显示全部设备部件的函数
+    void checkFreeSpace();                              // 检查部件是否有空余位置以放大设备部件
 
 };
 
