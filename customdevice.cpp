@@ -4,7 +4,10 @@ CustomDevice::CustomDevice(QGraphicsItem * parent) :
     QGraphicsProxyWidget (parent) {
     initCustomDevice();
 }
-CustomDevice::~CustomDevice() {};
+CustomDevice::~CustomDevice() {
+    customDeviceButton->deleteLater(); // 释放自定义设备按钮部件
+    customDeviceButton = nullptr;
+};
 CustomDevice::CustomDevice(QString name, QString iconPath, QString status,
                            QGraphicsItem * parent) :
     QGraphicsProxyWidget (parent) {
