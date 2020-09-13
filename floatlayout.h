@@ -11,10 +11,20 @@ class FloatLayout : public QGraphicsView {
     Q_OBJECT
 
 public:
-    explicit FloatLayout(QList<CustomDevice *> customDeviceList,
+    explicit FloatLayout(QGraphicsProxyWidget * customDevice,
+                             QWidget * parent);
+    explicit FloatLayout(QList<QGraphicsProxyWidget *> customDeviceList,
                          QWidget * parent = nullptr);
     ~FloatLayout();
-    void setTotalValue(int total);                      // 设置total的值
+    void setTotalValue(int total); // 设置total的值
+    /* 添加部件 */
+    void addWidget(QGraphicsProxyWidget * customDevice);
+    void addWidget(QWidget * qWidget);
+    void addWidget(QGraphicsProxyWidget * customDevice, int x, int y);
+    void addWidget(QWidget * qWidget, int x, int y);
+    /* 移除部件 */
+    void removeWidget(int pos);
+    void removeWidget(int x, int y);
 
 private:
     int row;                                            // 行
@@ -29,7 +39,7 @@ private:
     qreal scaleStep;                                    // 缩放步进值
     QGraphicsScene * graphicsScene;                     // 图形场景
     QGraphicsRectItem * graphicsRectItem;               // 矩形图元(用于拖动)
-    QList<CustomDevice *> graphicsWidgetList;           // 图形代理部件的列表
+    QList<QGraphicsProxyWidget *> graphicsWidgetList;   // 图形代理部件的列表
     void resizeEvent(QResizeEvent * size);              // 大小变化事件
     bool eventFilter(QObject * widget, QEvent * event); // 鼠标滚动过滤事件
     void widthChanged();                                // 宽度改变时调整部件位置的函数
